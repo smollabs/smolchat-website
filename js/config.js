@@ -8,11 +8,12 @@ window.SMOLCHAT_CONFIG = {
   releaseDate: null,
   releaseNotesUrl: null,
 
-  // To publish an installer: drop the file into the folder, then set `file`.
-  // Optional: version, arch, size (e.g. "84 MB"), sha256.
+  // To publish a local installer: drop the file into the folder, then set `file`.
+  // For a hosted installer, set `url` instead. Optional: version, arch, size
+  // (e.g. "84 MB"), sha256.
   downloads: {
-    windows: { label: "Windows", dir: "downloads/windows/", file: null, arch: null, size: null, version: null, sha256: null },
-    macos:   { label: "macOS",   dir: "downloads/macos/",   file: null, arch: null, size: null, version: null, sha256: null }
+    windows: { label: "Windows", dir: "downloads/windows/", file: null, url: "https://github.com/smollabs/smolchat-website/releases/download/v1.0.0/smolchat.exe", arch: null, size: null, version: "1.0.0", sha256: null },
+    macos:   { label: "macOS",   dir: "downloads/macos/",   file: null, url: "https://github.com/smollabs/smolchat-website/releases/download/v1.0.0/smolchat.dmg", arch: null, size: null, version: "1.0.0", sha256: null }
   },
 
   // Screenshots (themes of the real app).
@@ -37,7 +38,7 @@ window.SMOLCHAT_CONFIG = {
 
   links: {
     org: "https://github.com/smollabs",
-    github: "https://github.com/smollabs/smolchat",
+    github: "https://github.com/smollabs",
     docs: "#",    // TODO: documentation URL
     issues: "#",  // TODO: issue tracker URL
     license: "#", // TODO: license URL

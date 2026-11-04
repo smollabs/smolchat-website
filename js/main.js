@@ -18,11 +18,14 @@
   const detected = /Mac/i.test(plat + ua) && !/iPhone|iPad/i.test(ua) ? 'macos' : /Win/i.test(plat + ua) ? 'windows' : null;
   const iconFor = { windows: 'i-win', macos: 'i-apple' };
   function dlButton(key, i) {
-    const d = C.downloads[key], ok = !!d.file, a = document.createElement('a');
+    const d = C.downloads[key], ok = !!(d.url || d.file), a = document.createElement('a');
     a.className = 'btn ' + (i === 0 ? 'btn-primary' : 'btn-ghost') + (key === detected ? ' rec' : '');
     const detail = ok ? [d.arch, d.size].filter(Boolean).join(' · ') : '';
     a.innerHTML = `${icon(iconFor[key])}<span>${ok ? 'Download for ' : ''}${d.label}${ok ? '' : ' (unavailable)'}</span>${detail ? `<small>${detail}</small>` : ''}`;
-    if (ok) { a.href = d.dir + encodeURIComponent(d.file); a.setAttribute('download', d.file); }
+    if (ok) {
+      a.href = d.url || d.dir + encodeURIComponent(d.file);
+      if (d.file) a.setAttribute('download', d.file);
+    }
     else { a.setAttribute('aria-disabled', 'true'); a.setAttribute('role', 'link'); a.tabIndex = -1; a.title = 'Installer not yet available'; }
     return a;
   }
@@ -32,7 +35,7 @@
     if (el.dataset.downloads === 'hero') el.append(Object.assign(document.createElement('a'), { className: 'btn btn-ghost', href: '#models', textContent: 'Browse models' }));
   });
   const meta = [C.version && 'Version ' + C.version, C.releaseDate].filter(Boolean).join(' · ');
-  const anyOk = Object.values(C.downloads).some(d => d.file);
+  const anyOk = Object.values(C.downloads).some(d => d.url || d.file);
   $('#dlMeta').textContent = meta || (anyOk ? '' : 'Installers are not published yet.');
 
   // ---------- Theme (palette + particle colours) ----------
