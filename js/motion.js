@@ -14,11 +14,6 @@
     });
   })(h1);
 
-  // Marquee from config (duplicated for seamless loop)
-  const names = window.SMOLCHAT_CONFIG.models.map(m => m.name).concat(['Local', 'Private', 'Offline']);
-  const set = '<span>' + names.join('</span><span>') + '</span>';
-  $('#marquee').innerHTML = set + set;
-
   // Scroll reveal
   const targets = document.querySelectorAll('.head, .card, .chip, .shot, .video, .step, .note, details, .intro h2, .install, .req');
   targets.forEach(el => { el.classList.add('rv'); const sib = [...el.parentElement.children].indexOf(el); el.style.setProperty('--d', Math.min(sib, 6) * 90 + 'ms'); });
@@ -49,13 +44,14 @@
   const cv = $('#embers'), ctx = cv.getContext('2d'); let W, H, P = [], on = true;
   const size = () => { W = cv.width = cv.offsetWidth; H = cv.height = cv.offsetHeight; };
   size(); addEventListener('resize', size);
-  const cols = ['254,118,3', '254,224,114', '207,150,251'];
-  const mk = init => ({ x: Math.random() * W, y: init ? Math.random() * H : H + 10, r: Math.random() * 1.8 + .5, v: Math.random() * .5 + .15, s: Math.random() * 2 * Math.PI, c: cols[Math.random() * 3 | 0], a: Math.random() * .6 + .2 });
+  const getEmberCols = () => (window._smolTheme || { ember: ['254,118,3','254,224,114','207,150,251'] }).ember;
+  const mk = init => { const cols = getEmberCols(); return { x: Math.random() * W, y: init ? Math.random() * H : H + 10, r: Math.random() * 1.8 + .5, v: Math.random() * .5 + .15, s: Math.random() * 2 * Math.PI, c: cols[Math.random() * 3 | 0], a: Math.random() * .6 + .2 }; };
   P = Array.from({ length: Math.min(70, W / 18 | 0) }, () => mk(true));
   new IntersectionObserver(e => on = e[0].isIntersecting).observe(cv);
   (function tick(t) {
     if (on) {
       ctx.clearRect(0, 0, W, H);
+      const cols = getEmberCols();
       P.forEach((p, i) => {
         p.y -= p.v; p.x += Math.sin(t / 1500 + p.s) * .25;
         if (p.y < -10) P[i] = mk(false);

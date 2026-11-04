@@ -42,7 +42,7 @@ window.SMOLCHAT_CONFIG = {
   requirements: [],
 
   links: {
-    org: "#", // TODO: SmolWorks organization URL
+    org: "#", // TODO: smollabs organization URL
     github: "#", // TODO: smolchat repository URL
     docs: "#", // TODO: documentation URL
     issues: "#", // TODO: issue tracker URL

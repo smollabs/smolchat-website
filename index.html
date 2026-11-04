@@ -1,15 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="ember">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>smolchat – Run small AI models privately on your own computer</title>
-<meta name="description" content="smolchat is an open-source desktop app by SmolWorks. Download small language models once, then chat privately and offline on Windows and macOS.">
+<meta name="description" content="smolchat is an open-source desktop app. Download small language models once, then chat privately and offline on Windows and macOS.">
 <meta name="theme-color" content="#060512">
 <meta property="og:type" content="website">
 <meta property="og:title" content="smolchat – Local, private, offline AI chat">
 <meta property="og:description" content="Open-source desktop app for running small language models entirely on your computer.">
 <meta property="og:image" content="/assets/images/chat-ember.webp">
+<style>
+  /* Fix screenshot container to show full images */
+  .frame-inner img { object-fit: contain !important; background: var(--ink-900); }
+</style>
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="logos/smollabs_mascot.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,8 +46,6 @@
 <header class="nav" id="nav"><div class="wrap">
   <a class="brand" href="#top"><img src="logos/smollabs_mascot.png" alt="" data-mascot> smolchat</a>
   <nav aria-label="Primary"><ul id="menu">
-    <li><a href="#features">Features</a></li><li><a href="#demo">Demo</a></li><li><a href="#models">Models</a></li>
-    <li><a href="#how">How it works</a></li><li><a href="#faq">FAQ</a></li>
   </ul></nav>
   <a class="btn btn-light btn-nav" href="#download">Download</a>
   <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu"><svg class="ico"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
@@ -57,69 +59,13 @@
   <div class="wrap">
     <span class="pill"><svg class="ico"><use href="#i-spark"/></svg> Desktop app for Windows and macOS</span>
     <h1>Small AI models, running on <em>your own computer</em></h1>
-    <p class="lead">smolchat is an open-source desktop app by SmolWorks. Download a small language model once, then chat privately and offline. It is not a browser chatbot, and nothing leaves your machine.</p>
+    <p class="lead">smolchat is an open-source desktop app. Download a small language model once, then chat privately and offline. It is not a browser chatbot, and nothing leaves your machine.</p>
     <div class="cta-row" id="download" data-downloads="hero"></div>
     <p class="dl-meta" id="dlMeta"></p>
     <div class="tabs" role="tablist" aria-label="App themes" id="shotTabs"></div>
   </div>
   <div class="stage"><div class="frame"><div class="frame-inner" id="shotStage"></div></div></div>
 </div>
-
-<div class="marquee" aria-hidden="true"><div class="track" id="marquee"></div></div>
-<div class="marquee" aria-hidden="true"><div class="track" id="marq"></div></div>
-<section class="band"><div class="wrap intro">
-  <div><h2>Chat without the cloud</h2>
-    <p style="color:var(--text-dim)">smolchat brings small language models to a native desktop window. Pick a model, download it, and start talking. Your conversations are stored locally, and the model runs on your hardware.</p></div>
-  <div class="note"><strong>Two separate downloads.</strong> You download the smolchat app from this site. Model weights are downloaded later, from inside the app, from the model repositories it is configured to use. This website never runs or hosts models.</div>
-</div></section>
-
-<section id="features"><div class="wrap">
-  <div class="head"><h2>Built for local, private AI</h2><p>What smolchat does on your desktop.</p></div>
-  <div class="grid" id="featureGrid"></div>
-</div></section>
-
-<section class="band" id="demo"><div class="bgimg" style="--img:url(assets/images/chat-ember.webp)"></div><div class="wrap">
-  <div class="head"><h2>See smolchat in action</h2><p>A short walkthrough of the desktop app.</p></div>
-  <div class="video" id="video"></div>
-</div></section>
-
-<section id="models"><div class="bgimg" style="--img:url(assets/images/chat-ocean.webp)"></div><div class="wrap">
-  <div class="head"><h2>The Smol model family</h2><p>Small models designed to run on everyday computers. Only models confirmed as supported by the app are marked available.</p></div>
-  <div class="chips" id="modelChips"></div>
-  <div class="shots" id="extraShots"></div>
-  <div class="split">
-    <div class="card"><svg class="ico"><use href="#i-dl"/></svg><h3>1. Download the app</h3><p>A single installer from this page. Works the same whether or not you are online afterwards.</p></div>
-    <div class="card"><svg class="ico"><use href="#i-db"/></svg><h3>2. Download models in the app</h3><p>Model weights are fetched once from inside smolchat, then stored on your computer.</p></div>
-  </div>
-</div></section>
-
-<section class="band" id="how"><div class="bgimg" style="--img:url(assets/images/chat-graphite.webp)"></div><div class="wrap">
-  <div class="head"><h2>From download to first chat</h2><p>Internet is only needed for the two downloads.</p></div>
-  <div class="steps">
-    <div class="step"><div class="ring"><svg class="ico"><use href="#i-dl"/></svg></div><h3>Install smolchat</h3><p>Download the installer for your system and run it.</p></div>
-    <div class="step"><div class="ring"><svg class="ico"><use href="#i-db"/></svg></div><h3>Choose a model</h3><p>Open the Model Library and download one, or leave selection on Auto.</p></div>
-    <div class="step"><div class="ring"><svg class="ico"><use href="#i-off"/></svg></div><h3>Chat offline</h3><p>Start a conversation. Inference runs locally.</p></div>
-  </div>
-  <ol class="install">
-    <li><b>Windows:</b> run the downloaded installer and follow the prompts.</li>
-    <li><b>macOS:</b> open the downloaded disk image and move smolchat to Applications.</li>
-    <li>Launch smolchat, open <b>Model Library</b>, and download a model.</li>
-  </ol>
-</div></section>
-
-<section id="requirements" hidden><div class="wrap">
-  <div class="head"><h2>System requirements</h2></div><div class="req" id="reqList"></div>
-</div></section>
-
-<section id="faq"><div class="wrap">
-  <div class="head"><h2>Questions</h2></div>
-  <details><summary>Does smolchat work offline?</summary><p>Yes, once the app and at least one model are downloaded, conversations run locally without an internet connection.</p></details>
-  <details><summary>How do I get models?</summary><p>From the Model Library inside the app. Weights are downloaded once from the configured model repositories, such as Hugging Face, and kept on your computer.</p></details>
-  <details><summary>Is my data private?</summary><p>Inference happens on your computer and chat history is stored locally. The website itself has no backend and does not receive your conversations.</p></details>
-  <details><summary>Which platforms are supported?</summary><p>Windows and macOS desktop installers are offered on this page.</p></details>
-  <details><summary>What hardware do I need?</summary><p>Hardware requirements have not been verified yet, so none are listed. They will appear here once confirmed.</p></details>
-  <details><summary>Do I need an account?</summary><p>The site and installers do not ask for sign-in. Confirm account details in the project documentation.</p></details>
-</div></section>
 
 <section class="final"><div class="wrap">
   <h2>Run AI on <em>your terms</em></h2>
@@ -128,9 +74,25 @@
 </main>
 
 <footer><div class="wrap">
-  <a class="brand" href="#top"><img src="logos/smollabs_mascot.png" alt="" data-mascot> smolchat <span style="color:var(--text-dim);font-weight:400;font-size:14px">by SmolWorks</span></a>
-  <ul id="footLinks"></ul>
-  <p class="copy">smolchat is an open-source project by SmolWorks.</p>
+  <div class="footer-left">
+    <a class="brand" href="#top"><img src="logos/smollabs_mascot.png" alt="" data-mascot> smolchat <span style="color:var(--text-dim);font-weight:400;font-size:14px">by smollabs</span></a>
+    <ul id="footLinks"></ul>
+    <p class="copy">smolchat is an open-source project by smollabs.</p>
+  </div>
+  <div class="footer-right">
+    <a href="https://github.com/smollabs/smolchat" class="github-link" rel="noopener" target="_blank">
+      <svg class="ico"><use href="#i-git"/></svg>
+      <span>GitHub</span>
+    </a>
+    <div class="platform-boxes">
+      <a href="https://github.com/smollabs/smolchat-windows" class="platform-box" rel="noopener" target="_blank" title="Windows">
+        <svg class="ico"><use href="#i-win"/></svg>
+      </a>
+      <a href="https://github.com/smollabs/smolchat-mac" class="platform-box" rel="noopener" target="_blank" title="macOS">
+        <svg class="ico"><use href="#i-apple"/></svg>
+      </a>
+    </div>
+  </div>
 </div></footer>
 <script src="js/config.js"></script>
 <script src="js/main.js"></script>
