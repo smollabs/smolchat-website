@@ -9,18 +9,17 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="smolchat – Local, private, offline AI chat">
 <meta property="og:description" content="Open-source desktop app for running small language models entirely on your computer.">
+<!-- TODO: use your absolute domain, e.g. https://your-site.netlify.app/assets/images/chat-ember.webp -->
 <meta property="og:image" content="/assets/images/chat-ember.webp">
-<style>
-  /* Fix screenshot container to show full images */
-  .frame-inner img { object-fit: contain !important; background: var(--ink-900); }
-</style>
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/assets/images/chat-ember.webp">
 <link rel="icon" href="logos/smollabs_mascot.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif:ital@1&display=swap">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/blend.css">
 <link rel="stylesheet" href="css/motion.css">
+<link rel="stylesheet" href="css/polish.css">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -45,10 +44,8 @@
 
 <header class="nav" id="nav"><div class="wrap">
   <a class="brand" href="#top"><img src="logos/smollabs_mascot.png" alt="" data-mascot> smolchat</a>
-  <nav aria-label="Primary"><ul id="menu">
-  </ul></nav>
+  <nav aria-label="Primary"><ul><li><a href="#models">Models</a></li></ul></nav>
   <a class="btn btn-light btn-nav" href="#download">Download</a>
-  <button class="menu-btn" id="menuBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="menu"><svg class="ico"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 </div></header>
 
 <main id="main">
@@ -64,8 +61,18 @@
     <p class="dl-meta" id="dlMeta"></p>
     <div class="tabs" role="tablist" aria-label="App themes" id="shotTabs"></div>
   </div>
-  <div class="stage"><div class="frame"><div class="frame-inner" id="shotStage"></div></div></div>
+  <div class="stage" id="preview"><div class="frame"><div class="frame-inner" id="shotStage"></div></div></div>
 </div>
+
+<section class="models" id="models" aria-labelledby="modelsTitle"><div class="wrap">
+  <div class="head">
+    <h2 id="modelsTitle">Pick a <em>small model</em> that fits</h2>
+    <p>Download the one you want, then chat offline. Smaller sizes start faster on modest hardware; larger ones are generally more capable.</p>
+    <p class="models-meta" id="modelMeta"></p>
+  </div>
+  <div class="mtable-wrap" id="modelTable" role="region" aria-label="Model families and sizes" tabindex="0"></div>
+  <p class="models-note">Sizes are parameter counts: M = million, B = billion.</p>
+</div></section>
 
 <section class="final"><div class="wrap">
   <h2>Run AI on <em>your terms</em></h2>
@@ -97,6 +104,5 @@
 <script src="js/config.js"></script>
 <script src="js/main.js"></script>
 <script src="js/motion.js"></script>
-<div class="grain" aria-hidden="true"></div>
 </body>
 </html>
