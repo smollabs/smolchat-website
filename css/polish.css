@@ -213,3 +213,22 @@ footer{padding-bottom:calc(48px + env(safe-area-inset-bottom))}
 @media(prefers-reduced-motion:reduce){.phone{transform:rotate(2.5deg)}}
 /* selected tab keeps its dark label on hover (the generic hover turned it white-on-white) */
 .tab[aria-selected=true]:hover{color:var(--ink-900)}
+
+/* ---------- performance: soft glows without filter:blur ----------
+   Large blurred layers were the main source of lag (the browser re-blurs them while
+   they animate). A radial gradient fading to transparent gives the same soft glow for
+   almost nothing, and still animates with plain transforms. */
+.orb,.bg i{filter:none!important;background:radial-gradient(closest-side,var(--glow),color-mix(in srgb,var(--glow) 45%,transparent) 45%,transparent)!important;transform:translateZ(0)}
+.orb.o1{--glow:var(--orb-a);width:75vw;height:75vw;left:-25vw;top:-20vw}
+.orb.o2{--glow:var(--orb-b);width:65vw;height:65vw;right:-22vw}
+.orb.o3{--glow:var(--orb-c);width:60vw;height:60vw;left:15vw;bottom:-30vw}
+.orb.o4{--glow:var(--orb-d);width:40vw;height:40vw;right:2vw;top:-14vw}
+.b1{--glow:var(--orb-a);width:66vw;height:66vw;left:-22vw;top:-18vw}
+.b2{--glow:var(--orb-b);width:58vw;height:58vw;right:-20vw;top:-4vw}
+.b3{--glow:var(--orb-c);width:62vw;height:40vw;left:20vw;bottom:-16vw}
+.hero::after,.stage::before{filter:none}
+.hero::after{background:radial-gradient(ellipse closest-side,color-mix(in srgb,var(--accent) 30%,transparent),color-mix(in srgb,var(--accent-2) 14%,transparent) 45%,color-mix(in srgb,var(--accent) 5%,transparent) 70%,transparent)}
+.stage::before{background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 32%,transparent),color-mix(in srgb,var(--accent-2) 16%,transparent) 55%,transparent)}
+/* grain: a blended full-screen layer on top of the page forces the whole screen to be
+   re-blended each frame; a plain low-opacity texture looks nearly the same */
+.grain{mix-blend-mode:normal;opacity:.022}
