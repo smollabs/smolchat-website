@@ -15,8 +15,10 @@
 
   // ---------- Downloads ----------
   const ua = navigator.userAgent, plat = navigator.userAgentData?.platform || navigator.platform || '';
-  const detected = /Mac/i.test(plat + ua) && !/iPhone|iPad/i.test(ua) ? 'macos' : /Win/i.test(plat + ua) ? 'windows' : null;
-  const iconFor = { windows: 'i-win', macos: 'i-apple' };
+  const detected = /Android/i.test(plat + ua) ? 'android'
+    : /Mac/i.test(plat + ua) && !/iPhone|iPad/i.test(ua) && navigator.maxTouchPoints < 2 ? 'macos'
+    : /Win/i.test(plat + ua) ? 'windows' : null;
+  const iconFor = { windows: 'i-win', macos: 'i-apple', android: 'i-android' };
   function dlButton(key, i) {
     const d = C.downloads[key], ok = !!(d.url || d.file), a = document.createElement('a');
     a.className = 'btn ' + (i === 0 ? 'btn-primary' : 'btn-ghost') + (key === detected ? ' rec' : '');
@@ -29,23 +31,25 @@
     else { a.setAttribute('aria-disabled', 'true'); a.setAttribute('role', 'link'); a.tabIndex = -1; a.title = 'Installer not yet available'; }
     return a;
   }
-  const order = ['windows', 'macos'].sort((a, b) => (b === detected) - (a === detected));
+  const order = Object.keys(C.downloads).sort((a, b) => (b === detected) - (a === detected));
   document.querySelectorAll('[data-downloads]').forEach(el => {
     order.forEach((k, i) => el.append(dlButton(k, i)));
     if (el.dataset.downloads === 'hero') el.append(Object.assign(document.createElement('a'), { className: 'btn btn-ghost', href: '#models', textContent: 'Browse models' }));
   });
   const meta = [C.version && 'Version ' + C.version, C.releaseDate].filter(Boolean).join(' · ');
   const anyOk = Object.values(C.downloads).some(d => d.url || d.file);
-  $('#dlMeta').textContent = meta || (anyOk ? '' : 'Installers are not published yet.');
+  $('#dlMeta').textContent = detected === 'android'
+    ? 'Version ' + C.downloads.android.version + ' · if Android asks, allow installs from your browser.'
+    : meta || (anyOk ? '' : 'Installers are not published yet.');
 
   // ---------- Theme (palette + particle colours) ----------
   const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
   const themeParticles = {
-    ember:    { spark: ['#fdeba4', '#fee072', '#bb6afd', '#cf96fb', '#fdfcfc', '#fe7603'].map(hex), ember: [[254, 118, 3], [254, 224, 114], [207, 150, 251]] },
-    graphite: { spark: ['#c8d8ff', '#a0c4ff', '#5580f0', '#8ca8f8', '#e8ecf4', '#4e8fff'].map(hex), ember: [[78, 143, 255], [160, 196, 255], [140, 168, 248]] },
-    ocean:    { spark: ['#a8eddf', '#7fe8d0', '#15bfb0', '#5dd8cc', '#e0f4f8', '#00d4aa'].map(hex), ember: [[0, 212, 170], [127, 232, 208], [93, 216, 204]] }
+    ember:    { spark: ['#ffe2b8', '#ffc46b', '#e0701c', '#ffb070', '#fdfcfc', '#ff8a2b'].map(hex), ember: [[255, 138, 43], [255, 196, 107], [255, 176, 112]] },
+    graphite: { spark: ['#e4e4e8', '#cfcfd6', '#6e6e78', '#a1a1aa', '#ededf0', '#b9b9c2'].map(hex), ember: [[185, 185, 194], [207, 207, 214], [161, 161, 170]] },
+    ocean:    { spark: ['#bcd8ff', '#8ec2ff', '#2f7cf0', '#7fb4ff', '#e8f1ff', '#4d9bff'].map(hex), ember: [[77, 155, 255], [142, 194, 255], [127, 180, 255]] }
   };
-  const bgMap = { ember: '#060512', graphite: '#0a0c10', ocean: '#02080e' };
+  const bgMap = { ember: '#07060f', graphite: '#09090c', ocean: '#030812' };
   function applyTheme(id) {
     const t = themeParticles[id] ? id : 'ember';
     document.documentElement.setAttribute('data-theme', t);
@@ -55,16 +59,20 @@
   applyTheme('ember');
 
   // ---------- Screenshots + accessible tabs (cross-fading) ----------
-  const stage = $('#shotStage'), tabs = $('#shotTabs');
+  const stage = $('#shotStage'), phone = $('#phoneStage'), tabs = $('#shotTabs');
   const placeholder = t => `<div class="ph">${icon('i-monitor')}<p>${t}<br>Add the file to assets/images/ and set it in js/config.js</p></div>`;
   function show(s) {
-    const olds = [...stage.querySelectorAll('.shot-img')];
-    if (!s.src) { stage.innerHTML = placeholder(s.label); return; }
-    stage.querySelector('.ph')?.remove();
+    if (!s.src) stage.innerHTML = placeholder(s.label);
+    else swap(stage, s.src, s.alt, 1800, 1125);
+    if (phone) { phone.parentElement.hidden = !s.mobile; if (s.mobile) swap(phone, s.mobile, '', 716, 1600); }
+  }
+  function swap(host, src, alt, w, h) {
+    const olds = [...host.querySelectorAll('.shot-img')];
+    host.querySelector('.ph')?.remove();
     const img = new Image();
-    img.className = 'shot-img'; img.alt = s.alt; img.width = 1800; img.height = 1125; img.decoding = 'async';
+    img.className = 'shot-img'; img.alt = alt; img.width = w; img.height = h; img.decoding = 'async';
     if (olds.length && !calm) img.classList.add('enter');
-    img.src = s.src; stage.append(img);
+    img.src = src; host.append(img);
     const done = () => {
       requestAnimationFrame(() => img.classList.add('on'));
       setTimeout(() => olds.forEach(o => o.remove()), calm ? 0 : 650);
@@ -94,7 +102,7 @@
   if (C.screenshots.length) {
     select(0);
     // warm the cache so theme switches cross-fade instantly
-    setTimeout(() => C.screenshots.slice(1).forEach(s => { if (s.src) new Image().src = s.src; }), 800);
+    setTimeout(() => C.screenshots.slice(1).forEach(s => [s.src, s.mobile].forEach(u => { if (u) new Image().src = u; })), 800);
   }
 
   // ---------- Models: comparison table grouped by category ----------
@@ -128,16 +136,47 @@
   // ---------- Sparkles + cursor glow (motion allowed only) ----------
   if (calm) return;
   const glow = $('#glow');
-  if (matchMedia('(pointer:fine)').matches) addEventListener('pointermove', e => { glow.style.opacity = 1; glow.style.transform = `translate(${e.clientX}px,${e.clientY}px)`; }, { passive: true });
+  if (matchMedia('(pointer:fine)').matches) {
+    let gx = -999, gy = -999, tx = gx, ty = gy, gRaf = 0;
+    const follow = () => {
+      gx += (tx - gx) * .18; gy += (ty - gy) * .18;
+      glow.style.transform = `translate3d(${gx}px,${gy}px,0)`;
+      gRaf = Math.abs(tx - gx) + Math.abs(ty - gy) > .5 ? requestAnimationFrame(follow) : 0;
+    };
+    addEventListener('pointermove', e => {
+      if (gx === -999) { gx = e.clientX; gy = e.clientY; }
+      tx = e.clientX; ty = e.clientY; glow.style.opacity = 1;
+      if (!gRaf) gRaf = requestAnimationFrame(follow);
+    }, { passive: true });
+  }
 
   const cv = $('#sparks'), cx = cv.getContext('2d'), lite = matchMedia('(max-width:820px)').matches;
-  let W, H;
-  const size = () => { const r = devicePixelRatio || 1; cv.width = innerWidth * r; cv.height = innerHeight * r; cx.setTransform(r, 0, 0, r, 0, 0); W = innerWidth; H = innerHeight; };
+  let W = 0, H = 0;
+  // Ignore the height jitter of mobile address bars; only re-allocate when really needed
+  const size = () => {
+    if (innerWidth === W && innerHeight <= H) return;
+    const r = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = Math.max(innerHeight, H);
+    cv.width = W * r; cv.height = H * r; cv.style.height = H + 'px'; cx.setTransform(r, 0, 0, r, 0, 0);
+  };
   size(); addEventListener('resize', size);
   const pal = () => window._smolTheme.spark;
   const mk = () => { const i = Math.random() * 6 | 0; return { x: Math.random() * W, y: Math.random() * H, r: 2 + Math.random() * 5, v: .08 + Math.random() * .25, t: Math.random() * 6.28, s: .6 + Math.random() * 1.4, i, c: [...pal()[i]] }; };
   const P = Array.from({ length: Math.min(lite ? 14 : 46, innerWidth / 24 | 0) }, mk);
-  const star = (x, y, r) => { cx.beginPath(); cx.moveTo(x, y - r); cx.quadraticCurveTo(x, y, x + r, y); cx.quadraticCurveTo(x, y, x, y + r); cx.quadraticCurveTo(x, y, x - r, y); cx.quadraticCurveTo(x, y, x, y - r); cx.fill(); };
+  // Glowing stars are pre-rendered once per colour (shadowBlur every frame is the costly part)
+  const SR = 8, SB = lite ? 6 : 12, SS = (SR + SB * 2) * 2, sprites = new Map();
+  const sprite = c => {
+    const key = (c[0] >> 3) << 10 | (c[1] >> 3) << 5 | c[2] >> 3;
+    let sp = sprites.get(key);
+    if (!sp) {
+      if (sprites.size > 400) sprites.clear();
+      sp = document.createElement('canvas'); sp.width = sp.height = SS;
+      const g = sp.getContext('2d'), m = SS / 2, col = `rgb(${c[0] | 0},${c[1] | 0},${c[2] | 0})`;
+      g.fillStyle = g.shadowColor = col; g.shadowBlur = SB;
+      g.beginPath(); g.moveTo(m, m - SR); g.quadraticCurveTo(m, m, m + SR, m); g.quadraticCurveTo(m, m, m, m + SR); g.quadraticCurveTo(m, m, m - SR, m); g.quadraticCurveTo(m, m, m, m - SR); g.fill();
+      sprites.set(key, sp);
+    }
+    return sp;
+  };
   let raf = 0;
   function loop(now) {
     cx.clearRect(0, 0, W, H);
@@ -146,9 +185,8 @@
       p.y -= p.v; p.x += Math.sin(now / 3000 + p.t) * .15;
       if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
       const tc = cols[p.i]; for (let k = 0; k < 3; k++) p.c[k] += (tc[k] - p.c[k]) * .04; // ease to new theme
-      const col = `rgb(${p.c[0] | 0},${p.c[1] | 0},${p.c[2] | 0})`;
-      cx.globalAlpha = (.25 + .6 * (.5 + .5 * Math.sin(now / 1000 * p.s + p.t))) * .8; cx.fillStyle = col;
-      cx.shadowColor = col; cx.shadowBlur = lite ? 6 : 12; star(p.x, p.y, p.r);
+      cx.globalAlpha = (.25 + .6 * (.5 + .5 * Math.sin(now / 1000 * p.s + p.t))) * .8;
+      const d = SS * p.r / SR; cx.drawImage(sprite(p.c), p.x - d / 2, p.y - d / 2, d, d);
     }
     raf = requestAnimationFrame(loop);
   }

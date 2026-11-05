@@ -4,17 +4,17 @@
    ============================================================ */
 :root,[data-theme="ember"]{
   /* backgrounds */
-  --ink-900:#060512;--ink-800:#0e0927;--ink-700:#1c0d48;
+  --ink-900:#07060f;--ink-800:#110d1c;--ink-700:#2a1608;
   /* accents */
-  --orange:#fe7603;--white:#fdfcfc;--cream:#fdeba4;--yellow:#fee072;
-  --purple:#9c44fc;--purple-2:#bb6afd;--purple-3:#cf96fb;
+  --orange:#ff8a2b;--white:#fdfcfc;--cream:#ffe2b8;--yellow:#ffc46b;
+  --purple:#a8460c;--purple-2:#e0701c;--purple-3:#ffb070;
   /* semantic accent aliases (used everywhere instead of raw colors) */
   --accent:var(--orange);--accent-2:var(--purple);--accent-3:var(--purple-2);
   --accent-glow:color-mix(in srgb,var(--orange) 60%,transparent);
   --accent-soft:color-mix(in srgb,var(--orange) 14%,transparent);
   --accent-text:var(--cream);
   /* aurora / orb palette */
-  --orb-a:var(--purple);--orb-b:var(--ink-700);--orb-c:var(--orange);--orb-d:var(--purple-3);
+  --orb-a:#8a3a0c;--orb-b:#14101f;--orb-c:#ff7a1a;--orb-d:#ffb070;
   /* shared */
   --text-dim:color-mix(in srgb,var(--white) 66%,transparent);
   --line:color-mix(in srgb,var(--white) 12%,transparent);
@@ -23,31 +23,31 @@
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 
-/* ── Graphite theme (cool charcoal + steel blue) ── */
+/* ── Graphite theme (near-black + neutral grey) ── */
 [data-theme="graphite"]{
-  --ink-900:#0a0c10;--ink-800:#111318;--ink-700:#1e2230;
-  --orange:#4e8fff;--white:#e8ecf4;--cream:#c8d8ff;--yellow:#a0c4ff;
-  --purple:#2b5ce6;--purple-2:#5580f0;--purple-3:#8ca8f8;
+  --ink-900:#09090c;--ink-800:#131318;--ink-700:#26262d;
+  --orange:#b9b9c2;--white:#ededf0;--cream:#e4e4e8;--yellow:#cfcfd6;
+  --purple:#4a4a54;--purple-2:#6e6e78;--purple-3:#a1a1aa;
   --accent:var(--orange);--accent-2:var(--purple);--accent-3:var(--purple-2);
   --accent-glow:color-mix(in srgb,var(--orange) 60%,transparent);
   --accent-soft:color-mix(in srgb,var(--orange) 14%,transparent);
   --accent-text:var(--cream);
-  --orb-a:#2b5ce6;--orb-b:#1e2230;--orb-c:#4e8fff;--orb-d:#8ca8f8;
+  --orb-a:#3a3a44;--orb-b:#16161b;--orb-c:#6e6e78;--orb-d:#a1a1aa;
   --text-dim:color-mix(in srgb,var(--white) 66%,transparent);
   --line:color-mix(in srgb,var(--white) 12%,transparent);
   --surface:color-mix(in srgb,var(--ink-800) 82%,transparent);
 }
 
-/* ── Ocean theme (deep teal + cyan) ── */
+/* ── Ocean theme (deep navy + blue) ── */
 [data-theme="ocean"]{
-  --ink-900:#02080e;--ink-800:#051620;--ink-700:#082838;
-  --orange:#00d4aa;--white:#e0f4f8;--cream:#a8eddf;--yellow:#7fe8d0;
-  --purple:#0a8a7e;--purple-2:#15bfb0;--purple-3:#5dd8cc;
+  --ink-900:#030812;--ink-800:#06132a;--ink-700:#0b2a55;
+  --orange:#4d9bff;--white:#e8f1ff;--cream:#bcd8ff;--yellow:#8ec2ff;
+  --purple:#1554b8;--purple-2:#2f7cf0;--purple-3:#7fb4ff;
   --accent:var(--orange);--accent-2:var(--purple);--accent-3:var(--purple-2);
   --accent-glow:color-mix(in srgb,var(--orange) 60%,transparent);
   --accent-soft:color-mix(in srgb,var(--orange) 14%,transparent);
   --accent-text:var(--cream);
-  --orb-a:#0a8a7e;--orb-b:#082838;--orb-c:#00d4aa;--orb-d:#5dd8cc;
+  --orb-a:#0d4a8f;--orb-b:#071a38;--orb-c:#2f7cf0;--orb-d:#7fb4ff;
   --text-dim:color-mix(in srgb,var(--white) 66%,transparent);
   --line:color-mix(in srgb,var(--white) 12%,transparent);
   --surface:color-mix(in srgb,var(--ink-800) 82%,transparent);
